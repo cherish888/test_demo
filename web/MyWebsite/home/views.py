@@ -32,4 +32,4 @@ def user_login(request):
 def message(request):
     msg = request.POST.get('msg')
     models.LeaveMessage.objects.create(message=msg,create_date=int(time.time()))
-    return render(request,'恭喜你，留言成功啊啊啊额梵蒂冈梵蒂冈反对')
+    return render(request,'恭喜你')
