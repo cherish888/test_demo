@@ -22,7 +22,7 @@ def user_login(request):
     elif request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        md = models.UserTable.objects.filter(username=username,password=password)
+        md = models.Users.objects.filter(account=username,password=password)
         if md:
             return HttpResponse(request,'登录成功！')
         else:
@@ -32,4 +32,8 @@ def user_login(request):
 def message(request):
     msg = request.POST.get('msg')
     models.LeaveMessage.objects.create(message=msg,create_date=int(time.time()))
-    return render(request,'恭喜cherish成功转型python开发')
+    return render(request,'恭喜cherish成功转型python开发你好')
+
+def index(request):
+    pass
+    return render(request,'url/login.html',locals())
