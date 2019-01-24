@@ -20,6 +20,7 @@ from home import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^message/$',views.message),
+    url(r'^message$',views.add_message),
     url(r'^registered/$',views.registered),
+    url(r'^select_msg$',views.select_message),
 ]

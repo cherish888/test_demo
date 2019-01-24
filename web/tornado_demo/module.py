@@ -66,5 +66,24 @@ class Article(Base):
 
     article_user = relationship('User',backref='article',secondary='user_article')
 
+
+class Student(Base):
+    __tablename__ = 'student'
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    name = Column(String(20),nullable=False)
+    age = Column(String(20))
+    sex = Column(String(2))
+    address = Column(String(50))
+
+    def __repr__(self):
+        return 'User(id=%s,name=%s,age=%s,sex=%s,address=%s)'%(
+            self.id,
+            self.name,
+            self.age,
+            self.sex,
+            self.address
+        )
+
+
 if __name__ =='__main__':
     Base.metadata.create_all()

@@ -29,10 +29,18 @@ def user_login(request):
             return HttpResponse(request,'用户名或密码错误！')
 
 #添加留言
-def message(request):
-    msg = request.POST.get('msg')
-    models.LeaveMessage.objects.create(message=msg,create_date=int(time.time()))
-    return render(request,'python开发你好')
+def add_message(request):
+    if request.method == "GET":
+        return render(request,"msg.html")
+    elif request.method == 'POST':
+        msg = request.POST.get('msg')
+        models.LeaveMessage.objects.create(message=msg,create_date=int(time.time()))
+        return HttpResponse(request)
+
+def select_message(request):
+    msg_01 = models.LeaveMessage.objects.all()
+    return render(request,'msg_01.html',{'msg':msg_01})
+
 
 def index(request):
     pass
