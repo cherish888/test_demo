@@ -6,6 +6,7 @@
 </head>
 <body>
 <form method="post" action="/main">
+    {% module xsrf_form_html() %}
     <input placeholder="请输入用户名" name="name"/><br>
     <input placeholder="请输入密码" name="password" type="password"/><br>
     <input type="submit" value="提交">

@@ -9,12 +9,22 @@ import tornado.options
 from connect import session
 from module import User
 from tornado.options import define,options
+from tornado.web import authenticated
+from pycket.session import SessionMixin
 
 
 define('port',default=8000,help='run port',type=int)
 
+class BaseHandler(tornado.web.RequestHandler,SessionMixin):
+    def get_current_user(self):
+        # current_user = self.get_secure_cookie('ID')
+        current_user = self.session.get('user')
+        if current_user:
+            return current_user
 
-class IndexHandler(tornado.web.RequestHandler):
+
+
+class IndexHandler(BaseHandler):
     def get(self):
         # time.sleep(3)
         self.render('demo_3-1.html')
@@ -24,7 +34,9 @@ class IndexHandler(tornado.web.RequestHandler):
         pwd = self.get_argument('password')
         user = User.by_name(name)
         if user and user.password == pwd:
-            self.render('demo_3-2.html',name=name,)
+            # self.render('demo_3-2.html',name=name,)
+            self.session.set('user',name)
+            self.write('登录成功')
         else:
             self.write('用户名或密码错误~')
 
@@ -62,7 +74,22 @@ application = tornado.web.Application(
         (r"/delete",DeleteUser),
 ],
 template_path= 'templates',
-debug=True
+debug=True,
+cookie_secret='asdfghj',
+pycket = {
+    'engine':'redis',
+    'storage':{
+        'host':'localhost',
+        'port':6379,
+        'db_sessions':5,    #会话
+        'db_notifications':11,  #通知
+        'max_connections':2 ** 31   #最大连接数
+    },
+    'cookies':{
+        'expires_days':30,
+        'max_age':100
+    },
+}
 )
 
 if __name__ == "__main__":
